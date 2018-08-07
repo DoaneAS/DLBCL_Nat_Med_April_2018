@@ -244,15 +244,15 @@ selectBestcluster <- function(allexpression,measure,inputexp,output,clumembershi
   # either.
   #tname <- paste("K=",c(seq(2,(nn[2]+1))),sep="")
   tname <- paste("K=", row.names(values), sep = "")
-  #maxK <- length(sil)+1
+  maxK <- length(sil)+1
+  k.vector <- vector(mode = "numeric", length = length(sil))
+  k.vector <- c(2:maxK)
   
-  maxK <- max(as.numeric(row.names(values)))
-  minK <- min(as.numeric(row.names(values)))
+  #maxK <- max(as.numeric(row.names(values)))
+  #minK <- min(as.numeric(row.names(values)))
   
+  ##k.vector <- c(minK : maxK)
   
-  k.vector <- vector(mode = "numeric", length = nrow(values))
-  #k.vector <- c(2:maxK)
-  k.vector <- c(minK : maxK)
   
   # nils: Open device and create canvas for silhouette figure.
   CairoPNG(paste(output,".silfig.png",sep=""),width=1200,height=1200)
@@ -273,11 +273,17 @@ selectBestcluster <- function(allexpression,measure,inputexp,output,clumembershi
   lines(k.vector,sil, type = "l", col = "black")
   points(k.vector,sil, pch=22, type = "p", cex = 1.25, bg = "black", col = "black")
   points((kclus+1),sil[kclus],pch=18,col="red",bg="red",cex=2.5)
+  axis(side=1,at=seq(min(k.vector),max(k.vector), 1),labels=tname)
   
   plot(k.vector,values[,1], main ="Cophenetic Coefficient in each cluster",xlab = "k", ylab="Cophenetic Coefficient", type = "n")
   lines(k.vector,values[,1], type = "l", col = "black")
   points(k.vector,values[,1], pch=22, type = "p", cex = 1.25, bg = "black", col = "black")
   points((kclus+1),values[(kclus),1],pch=18,col="red",bg="red",cex=2.5)
+  axis(side=1,at=seq(min(k.vector),max(k.vector), 1),labels=tname)
+  
+  
+  
+  
   
   
   #dev.off()
